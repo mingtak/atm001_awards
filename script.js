@@ -5,7 +5,8 @@ var vm = new Vue({
     el: '#vue',
 
     data: {
-        test:"測試",
+        i7Awards: [],
+        cashAwards: [],
     },
 
     methods: {
@@ -15,28 +16,45 @@ var vm = new Vue({
             var list_2 = getData('HLATM_2.csv');
             new_list = weighted(list_1, list_2);
             var total = totalWeight(new_list);
+
             i7Awards = [];
 //            alert('total: ' + total);
 
-            for(var i=0; i<3; i+=1){
+            for(var i=0; i<13; i+=1){
                 weightCount = 0;
                 award = getRandomInt(1, total);
-                alert('抽到的號碼: ' + award);
+                console.log('抽到的號碼: ' + award);
 
                 for(var j=0; j<new_list.length; j+=1){
                     weightCount += new_list[j]['weight'];
 //                    alert('抽獎:' + weightCount);
-                    if( weightCount == award ){
-                        i7Awards.push(new_list[j]);
-                        
-                        alert('i7Awards: ' + i7Awards + ' , 第幾個中獎: ' + j);
+                    if( award > (weightCount - new_list[j]['weight']) && award <= weightCount ){
+                        // 檢查是否重覆中獎
+                        if( i7Awards.length == 0 ){
+                            i7Awards.push(new_list[j]);
+                            console.log('i7Awards: ' + i7Awards + ' ,1 第幾個中獎: ' + j);
+                            break;
+                        };
+
+                        alreadyAward = false;
+                        for(var k=0; k<i7Awards.length; k+=1){
+                            console.log(k + ': ' +new_list[j]['BankId'] + ' ' + i7Awards[k]['BankId'] + ' ' + new_list[j]['AcctId'] + ' ' + i7Awards[k]['AcctId'])
+                            if(new_list[j]['BankId'] == i7Awards[k]['BankId'] && new_list[j]['AcctId'] == i7Awards[k]['AcctId']){
+                                console.log('這個中過了: ' + j);
+                                alreadyAward = true;
+                                break;
+                            }
+                        };
+                        if(! alreadyAward){
+                            i7Awards.push(new_list[j]);
+                            console.log('i7Awards: ' + i7Awards + ' ,2 第幾個中獎: ' + j);
+                        };
+                        break;
                     };
                 };
             };
-
-//            alert('i7Awards: ' + i7Awards);
-
-
+            console.log('最後結果: ' + i7Awards);
+            vm.i7Awards = showList(i7Awards);
         },
 
         cash_prize: function() {
@@ -50,6 +68,15 @@ var vm = new Vue({
     },
 });
 
+
+// show list, 回傳中獎名單(array)
+var showList = function(awards){
+    result = []
+    for(var i=0; i<awards.length; i+=1){
+        result.push('銀行代碼:' + awards[i]['BankId'] + ', 帳號後5碼:' + awards[i]['AcctId'] + ', 電話號碼:' + awards[i]['PhoneNo'] + ', Email:' + awards[i]['Email'] + ', 姓名:' + awards[i]['UsrName']);
+    };
+    return result
+};
 
 // 計算總權重
 var totalWeight = function(list){
