@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>萊永豐賺愛豐-抽獎程式</title>
+<link href="web.css" rel="stylesheet" type="text/css" />
+<script src="jquery-latest.min.js"></script>
+<script src="vue.min.js"></script>
+<!-- <script src="papaparse.min.js"></script> -->
+<script src="csv.min.js"></script>
+</head>
+
+<body>
+<div id="vue">
+<h1>萊永豐賺愛豐-抽獎程式</h1>
+<!--
+HLATM_1.csv: <input type="file" id="file1" multiple="">
+<br>
+HLATM_2.csv: <input type="file" id="file2" multiple="">
+-->
+<h3>iPhone 7 128G共3台(不重複) <a href="javascript:void(0)" class="iphone7" v-on:click="i7_prize">按此抽獎</a></h3>
+
+<h4 class="iphone7">中獎名單:</h4>
+
+
+<h3>萊爾富購物金50元共830名(可重複) <a href="javascript:void(0)" class="cash50" v-on:click="cash_prize">按此抽獎</a></h3>
+<h4 class="cash50">中獎名單:</h4>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
