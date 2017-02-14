@@ -20,7 +20,11 @@ var vm = new Vue({
             i7Awards = [];
 //            alert('total: ' + total);
 
-            for(var i=0; i<13; i+=1){
+            for(var i=0; true; i+=1){
+                if(i7Awards.length == 3){
+                    break;
+                };
+
                 weightCount = 0;
                 award = getRandomInt(1, total);
                 console.log('抽到的號碼: ' + award);
@@ -57,11 +61,38 @@ var vm = new Vue({
             vm.i7Awards = showList(i7Awards);
         },
 
+// 全家禮券
         cash_prize: function() {
             var list_1 = getData('HLATM_1.csv');
             var list_2 = getData('HLATM_2.csv');
             new_list = weighted(list_1, list_2);
             var total = totalWeight(new_list);
+
+            cashAwards = [];
+//            alert('total: ' + total);
+
+            for(var i=0; true; i+=1){
+                if(cashAwards.length == 830){
+                    break;
+                };
+
+                weightCount = 0;
+                award = getRandomInt(1, total);
+                console.log('抽到的號碼: ' + award);
+
+                for(var j=0; j<new_list.length; j+=1){
+                    weightCount += new_list[j]['weight'];
+
+                    if( award > (weightCount - new_list[j]['weight']) && award <= weightCount ){
+                        cashAwards.push(new_list[j]);
+                        console.log('cashAwards: ' + cashAwards + ' ,3 第幾個中獎: ' + j);
+                        break;
+                    };
+                    continue;
+                };
+            };
+            console.log('全家禮券最後結果: ' + cashAwards);
+            vm.cashAwards = showList(cashAwards);
 
 
         },
